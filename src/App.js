@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import './scss/style.scss';
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+
+import Home from "./views/Home";
+import TreeView from "./views/TreeView";
+import ListView from "./views/ListView";
+import AddNode from "./views/AddNode";
+import {Header,Footer} from "./components";
+import Page404 from "./views/errors/Page404";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/404" element={<Page404 />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/tree-view" element={<TreeView />} />
+        <Route path="/list-view" element={<ListView />} />
+        <Route path="/add-node" element={<AddNode />} />
+        <Route path="*" element={<Page404 />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
