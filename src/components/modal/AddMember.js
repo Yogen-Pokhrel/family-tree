@@ -28,7 +28,6 @@ const AddMember = ({handleFormSubmit, getMembers, ...rest}) => {
   };
 
   const onFinish = (values) => {
-    console.log('Success:', values);
     let success = handleFormSubmit(values);
     if(success){
         openNotification();
