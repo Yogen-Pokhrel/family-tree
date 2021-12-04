@@ -1,2 +1,40 @@
 @import '~antd/dist/antd.css';
 @import './utility-class.css';
+
+
+.tree{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.tree-element{
+    width: 120px;
+    height: 120px;
+    // line-height: 80px;
+    font-size: 14px;
+    color: black;
+    background-color: white;
+    border: 1px solid #555;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    margin: 5px;
+    vertical-align: middle;
+}
+
+.tree-element-data{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.tree-element__male{
+    background-color: #555;
+    color: white;
+}
+
+.tree-element__female{
+    background-color: rgb(179, 90, 171);
+    color: white;
+}
