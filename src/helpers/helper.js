@@ -83,7 +83,7 @@ const getPartner = (partnerId, relations, returnType = "object") => {
         }
     }
 
-    console.log("Hey my partner is",partnerId);
+    // console.log("Hey my partner is",partnerId);
     if(returnType === "boolean"){
         return (partner.length > 0) ? true : false;
     }
@@ -96,18 +96,13 @@ const getParents = (memberId, relations) => {
     let ptId;
     for(const [key,value] of Object.entries(relations)){
         ptId  = "";
-        if(value.relationType != 1 && (value.pid == memberId || value.ppid == memberId)){
-            if(value.id == memberId) {
-                ptId = value.pid
-            }else{
-                ptId = value.id;
-            }  
-            if(!parents.includes(ptId) && ptId){
-                parents.push(ptId)
-            }
-            
+        if(value.relationType != 1 && value.id == memberId){ 
+            parents.push(value.pid);
+            parents.push(value.ppid);
         }
     }
+    console.log("Member id",memberId);
+    console.log("Hey my parents are",parents);
     return parents; 
 };
 
