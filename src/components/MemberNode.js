@@ -37,7 +37,7 @@ const MemberNode = ({member,familyMembers,partner,relations,getPartner,getParent
             </div>
         </div>
         {
-            (generationChanged) ? <div class="break"></div> : ''
+            (generationChanged) ? <div className="break"></div> : ''
         }
         {
             (itsChildren.length > 0) ?

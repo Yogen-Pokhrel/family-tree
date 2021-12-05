@@ -228,18 +228,6 @@ const ListView = () => {
     }
   }
 
-  const prepareQueue = (treeData,generation) =>{
-    let newQueueData = []
-    treeData.forEach(function(ele){
-      let child = {
-        id: ele,
-        generation : generation
-      }
-      newQueueData.push(child);
-    })
-    return newQueueData;
-  }
-
   let traversed = [];
   let generation = 0;
 

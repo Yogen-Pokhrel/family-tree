@@ -17,14 +17,6 @@ const Header = () => {
         <Menu.Item key="home" icon={<HomeOutlined />}>
           <Link to="/" >Tree View</Link>
         </Menu.Item>
-        <Menu.Item key="list-view" icon={<MenuFoldOutlined />}>
-          <Link to="/list-view" >List View</Link>
-        </Menu.Item>
-
-        <Menu.Item key="add-node" icon={<MenuFoldOutlined />}>
-          <Link to="/add-node" >Add Node</Link>
-        </Menu.Item>
-
       </Menu>
     </header>
   )
