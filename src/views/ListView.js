@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Row, Col, Space } from 'antd';
 import AddMember from "../components/modal/AddMember";
 import {getFamilyMembersByGender, getChildrensOfParents, getPartner, getParents, getRootParents} from "../helpers/helper";
+import MemberNode from "../components/MemberNode";
 
 var familyMembers = {
   "MB_1638535054318" : {
@@ -341,8 +342,9 @@ const ListView = () => {
               // ))
               // :
               // ''
-              displayTree()
+              // displayTree()
             }
+            <MemberNode />
           </div>
         </Col>
       </Row>
