@@ -20,7 +20,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/404" element={<Page404 />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<TreeView />} />
         <Route path="/tree-view" element={<TreeView />} />
         <Route path="/list-view" element={<ListView />} />
         <Route path="/add-node" element={<AddNode />} />
