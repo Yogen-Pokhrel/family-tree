@@ -167,7 +167,7 @@ var relations = [
 
 const ListView = () => {
 
-  let treeData = getRootParents(relations);
+  let treeData = getRootParents(relations,familyMembers);
   const [treeCount,setTreeCount] = useState(1);
 
   const handleFormSubmit = (formValues) => {
@@ -208,7 +208,7 @@ const ListView = () => {
   }
 
   const getPartnersOfMember = (memberId) => {
-    let members = getPartner(memberId,relations);
+    let members = getPartner(memberId,relations,familyMembers);
     let partnersData = [];
     members.forEach(function(ele){
       let eachPartner = {
@@ -221,9 +221,11 @@ const ListView = () => {
     return partnersData;
   }
 
-  const deleteNote = (node) => {
-    console.log("I am here");
-    console.log(node);
+  const deleteNode = (node) => {
+    if(familyMembers[node]){
+      familyMembers[node].status = 2;
+      setTreeCount(treeCount + 1);
+    }
   }
 
   const prepareQueue = (treeData,generation) =>{
@@ -238,94 +240,8 @@ const ListView = () => {
     return newQueueData;
   }
 
-
-  const displayTree = () => {
-
-    // onQueue.map((elements,index) => {
-      let index = 0;
-    while(onQueue.length > 0){
-      index++;
-      let itemData = onQueue.shift();
-      let item = itemData['id'];
-      currentGeneration = itemData.generation;
-      if(traversed.includes(item))return;
-      let itsPartner = getPartner(item,relations);
-      let itsParents = getParents(item,relations);
-      console.log(itemData);
-      if(itsPartner.length > 0){
-        // while(itsPartner.length > 0){
-          itsPartner.map((partnerItems,partnerIndex) => {
-          index++;
-          let eachPartner = itsPartner.shift();
-          let parentsToSearch = [item,eachPartner];
-          let itsChildren = getChildrensOfParents(parentsToSearch,relations);
-          let partnerParents = getParents(eachPartner,relations);
-
-          // if(previousGeneration != currentGeneration){
-          //   previousGeneration = currentGeneration;
-          //   tt += `<div class="break"></div>`;
-          // }
-
-          qDt = prepareQueue(itsChildren, ++generation);
-          onQueue = [...onQueue,...qDt];
-          traversed.push(item);
-          traversed.push(eachPartner);
-
-          return( <div className="tree">
-                  {(itsChildren.length > 0) ? <i className="connector connector-children"></i> : ''}
-                  {(itsParents.length > 0 && itsParents[0] != 0) ? <i className="connector connector-parent"></i> : ''}
-                  <div className={((familyMembers[item].gender == "male") ? 'tree-element__male' : 'tree-element__female')+' tree-element'} >
-                    <span className="delete-node">X</span>
-                    <span className="tree-element-data d-block">{(familyMembers[item]) ? familyMembers[item].name : 'Not Found'}</span>
-                    <span className="tree-element-data d-block">Father: {(familyMembers[itsParents[0]]) ? familyMembers[itsParents[0]].name : 'No Data'}</span>
-                    <span className="tree-element-data d-block">Mother: {(familyMembers[itsParents[1]]) ? familyMembers[itsParents[1]].name : 'No Data'}</span>
-                  </div>
-                  {
-                    (eachPartner) ? 
-                    <div className={((familyMembers[eachPartner].gender == "male") ? 'tree-element__male' : 'tree-element__female')+' tree-element'}>
-                      <span className="tree-element-data d-block">{(familyMembers[eachPartner]) ? familyMembers[eachPartner].name : 'Not found'}</span>
-                      <span className="tree-element-data d-block">Father: {(familyMembers[partnerParents[0]]) ? familyMembers[partnerParents[0]].name : 'No Data'}</span>
-                      <span className="tree-element-data d-block">Mother: {(familyMembers[partnerParents[1]]) ? familyMembers[partnerParents[1]].name : 'No Data'}</span>
-                    </div>
-                  : ''
-                  }
-                </div>
-          );
-        
-        });
-      }else{
-        // if(previousGeneration != currentGeneration){
-        //   tt += `<div class="break"></div>`;
-        //  }
-  
-        let itsChildren = getChildrensOfParents([item],relations);
-        qDt = prepareQueue(itsChildren, ++generation);
-        onQueue = [...onQueue,...qDt];
-        traversed.push(item);
-
-        return (<div className="tree ">
-                <div className="tree-element">
-                  <span className="tree-element-data d-block">{(familyMembers[item]) ? familyMembers[item].name : 'Not Found'}</span>
-                  <span className="tree-element-data d-block">Father: {(familyMembers[itsParents[0]]) ? familyMembers[itsParents[0]].name : 'No Data'}</span>
-                  <span className="tree-element-data d-block">Mother: {(familyMembers[itsParents[1]]) ? familyMembers[itsParents[1]].name : 'No Data'}</span>
-                </div>
-              </div>
-        )
-          
-      }
-      return(
-        <div key={"members_"+index}>Your Loginc Here</div>
-      )
-    }
-
-  }
-
   let traversed = [];
   let generation = 0;
-  let onQueue = [];
-  let qDt = prepareQueue(treeData, generation);
-  onQueue = [...onQueue,...qDt];
-  let previousGeneration = generation, currentGeneration = generation;
 
   return (
       <Row>
@@ -333,18 +249,51 @@ const ListView = () => {
           <Space size="small" className="px-4 mt-4">
             <AddMember handleFormSubmit={handleFormSubmit} getMembers={getMembers} getPartnersOfMember={getPartnersOfMember} />
           </Space>
-          {/* <div dangerouslySetInnerHTML={{ __html: displayTree() }}></div> */}
-          <div>
+          <div className="main-tree-outer">
             {
-              // (onQueue.length > 0) ?
-              // onQueue.map((elements,index) => (
-              //   <div key={index}>{displayTree()}</div>
-              // ))
-              // :
-              // ''
-              // displayTree()
+              (treeData.length > 0) ?
+              treeData.map((item,index) => {
+                let itsPartner = getPartner(item,relations,familyMembers);
+                if(itsPartner.length>0){
+                 return itsPartner.map((partner,partnerIndex) => {
+                  if(traversed.includes(item) && traversed.includes(partner)) return ('');
+                  traversed.push(item)
+                  traversed.push(partner)
+                  return <MemberNode key={partnerIndex} 
+                      member={item} 
+                      partner={partner}
+                      familyMembers={familyMembers}
+                      relations={relations}
+                      getPartner={getPartner}
+                      getParents={getParents}
+                      getChildrensOfParents={getChildrensOfParents}
+                      traversed={traversed}
+                      generation={generation++}
+                      deleteNode={deleteNode}
+                      />
+                 })
+                }else{
+                  if(traversed.includes(item)) return ('');
+                  traversed.push(item)
+                  return <MemberNode key={index} 
+                    member={item} 
+                    partner={false}
+                    familyMembers={familyMembers}
+                    relations={relations}
+                    getPartner={getPartner}
+                    getParents={getParents}
+                    getChildrensOfParents={getChildrensOfParents}
+                    traversed={traversed}
+                    deleteNode={deleteNode}
+                    />
+                    
+                }
+               
+                })
+              :
+              'There are no any family members'
             }
-            <MemberNode />
+            
           </div>
         </Col>
       </Row>

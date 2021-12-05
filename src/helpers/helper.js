@@ -9,11 +9,11 @@ const getFamilyMembersByGender = (familyMembers,gender = "male") =>{
     return newDataSet;
 }
 
-const getChildrensOfParents = (parentIds,relations) => {
+const getChildrensOfParents = (parentIds,relations,familyMembers) => {
     let childrens = [];
     for(const [key,value] of Object.entries(relations)){
         if((value.relationType == 2 || value.relationType == 3) && parentIds.includes(value.pid)  &&  parentIds.includes(value.ppid)){
-            if(!childrens.includes(value.id)){
+            if(!childrens.includes(value.id) && familyMembers[value.id] && familyMembers[value.id].status == 1){
                 childrens.push(value.id);
             }
         }
@@ -22,7 +22,7 @@ const getChildrensOfParents = (parentIds,relations) => {
 };
 
 
-const getPartner = (partnerId, relations) => {
+const getPartner = (partnerId, relations,familyMembers) => {
     let partner = [];
     let ptId;
     for(const [key,value] of Object.entries(relations)){
@@ -34,7 +34,9 @@ const getPartner = (partnerId, relations) => {
                 ptId = value.id;
             }  
             if(!partner.includes(ptId) && ptId){
-                partner.push(ptId)
+                if(familyMembers[ptId] && familyMembers[ptId].status == 1){
+                    partner.push(ptId)
+                }
             }
             
         }
@@ -42,25 +44,31 @@ const getPartner = (partnerId, relations) => {
     return partner; 
 };
 
-const getParents = (memberId, relations) => {
+const getParents = (memberId, relations,familyMembers) => {
     let parents = [];
     for(const [key,value] of Object.entries(relations)){
         if(value.relationType != 1 && value.id == memberId ){
-            parents.push(value.pid)
-            parents.push(value.ppid)
+            if(familyMembers[value.pid] && familyMembers[value.pid].status == 1){
+                parents.push(value.pid)
+            }else{
+                parents.push(0)
+            }
+            if(familyMembers[value.ppid] && familyMembers[value.ppid].status == 1){
+                parents.push(value.ppid)
+            }
             break;
         }
     }
-    console.log("Member id",memberId);
-    console.log("Hey my parents are",parents);
     return parents; 
 };
 
-const getRootParents = (relations) => {
+const getRootParents = (relations,familyMembers) => {
     let rootMembers = [];
     for(const[key,value] of Object.entries(relations)){
         if(value.pid == 0 && value.relationType == 2){
-            rootMembers.push(value.id)
+            if(familyMembers[value.id] && familyMembers[value.id].status == 1){
+                rootMembers.push(value.id)
+            }
         }
     }
     return rootMembers;
