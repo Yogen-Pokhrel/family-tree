@@ -2,9 +2,11 @@
 
     ```
     
-    1 => Husband/wife
-    2 => Parent
-    3 => Children
+    {
+        1. npm install
+        2. To start an application -> npm start
+        3. To run the test cases -> npm test
+    }
     
 
     ```
