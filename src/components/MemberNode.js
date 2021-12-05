@@ -13,7 +13,7 @@ const MemberNode = ({member,familyMembers,partner,relations,getPartner,getParent
     
     return (
         <>
-        <div className="main-tree-wrapper">
+        {/* <div className="main-tree-wrapper"> */}
             <div className="tree ">
                 {(itsChildren.length > 0) ? <i className="connector connector-children"></i> : ''}
                 {(itsParents.length > 0 && itsParents[0] != 0) ? <i className="connector connector-parent"></i> : ''}
@@ -35,7 +35,7 @@ const MemberNode = ({member,familyMembers,partner,relations,getPartner,getParent
                 : ''
                 }
             </div>
-        </div>
+        {/* </div> */}
         {
             (generationChanged) ? <div className="break"></div> : ''
         }
@@ -47,7 +47,7 @@ const MemberNode = ({member,familyMembers,partner,relations,getPartner,getParent
                 return itsPartner.map((childrenPartner,childrenPartnerIndex) => {
                 if(traversed.includes(childrenPartner)) return ('');
                 traversed.push(item)
-                return <MemberNode key={childrenPartnerIndex} 
+                return <div className={(index == 0) ? 'main-tree-wrapper' : 'main-tree-wrapper'}><MemberNode key={childrenPartnerIndex} 
                     member={item} 
                     partner={childrenPartner}
                     familyMembers={familyMembers}
@@ -58,7 +58,7 @@ const MemberNode = ({member,familyMembers,partner,relations,getPartner,getParent
                     traversed={traversed}
                     generationChanged={true}
                     deleteNode={deleteNode}
-                    />
+                    /></div>
                 })
             }else{
                 return <MemberNode key={index} 
@@ -71,8 +71,8 @@ const MemberNode = ({member,familyMembers,partner,relations,getPartner,getParent
                 getChildrensOfParents={getChildrensOfParents}
                 traversed={traversed}
                 deleteNode={deleteNode}
+                generationChanged={true}
                 />
-                
             }
             
             })

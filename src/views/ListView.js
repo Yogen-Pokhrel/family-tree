@@ -247,18 +247,18 @@ const ListView = () => {
                   if(traversed.includes(item) && traversed.includes(partner)) return ('');
                   traversed.push(item)
                   traversed.push(partner)
-                  return <MemberNode key={partnerIndex} 
-                      member={item} 
-                      partner={partner}
-                      familyMembers={familyMembers}
-                      relations={relations}
-                      getPartner={getPartner}
-                      getParents={getParents}
-                      getChildrensOfParents={getChildrensOfParents}
-                      traversed={traversed}
-                      generation={generation++}
-                      deleteNode={deleteNode}
-                      />
+                  return <div className="main-tree-wrapper"><MemberNode key={partnerIndex} 
+                          member={item} 
+                          partner={partner}
+                          familyMembers={familyMembers}
+                          relations={relations}
+                          getPartner={getPartner}
+                          getParents={getParents}
+                          getChildrensOfParents={getChildrensOfParents}
+                          traversed={traversed}
+                          generation={generation++}
+                          deleteNode={deleteNode}
+                      /></div>
                  })
                 }else{
                   if(traversed.includes(item)) return ('');
