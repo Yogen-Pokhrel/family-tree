@@ -7,7 +7,6 @@ const Header = () => {
     const [current,setCurrent] = useState('home');
 
     const handleClick = e => {
-        console.log('click ', e);
         setCurrent(e.key)
       };
 
@@ -16,6 +15,12 @@ const Header = () => {
         <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
         <Menu.Item key="home" icon={<HomeOutlined />}>
           <Link to="/" >Tree View</Link>
+        </Menu.Item>
+        <Menu.Item key="tree-view" icon={<HomeOutlined />}>
+          <Link to="/tree-view" >Tree View Lib</Link>
+        </Menu.Item>
+        <Menu.Item key="tree-view-custom" icon={<HomeOutlined />}>
+          <Link to="/tree-view-custom" >Tree View Custom</Link>
         </Menu.Item>
       </Menu>
     </header>

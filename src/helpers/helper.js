@@ -74,4 +74,12 @@ const getRootParents = (relations,familyMembers) => {
     return rootMembers;
 }
 
-export {getFamilyMembersByGender,getChildrensOfParents, getPartner,getParents, getRootParents};
+const getTopMostNodeOfFamily = (rootId,nodes) => {
+    if(nodes[rootId] && nodes[rootId].parents && nodes[rootId].parents.length > 0){
+        return getTopMostNodeOfFamily(nodes[rootId].parents[0].id, nodes);
+    }else{
+        return rootId;
+    }
+}
+
+export {getFamilyMembersByGender,getChildrensOfParents, getPartner,getParents, getRootParents, getTopMostNodeOfFamily};

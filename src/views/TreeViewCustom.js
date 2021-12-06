@@ -3,7 +3,6 @@ import { Row, Col, Space } from 'antd';
 import ReactFamilyTree from 'react-family-tree';
 import FamilyNode from '../components/FamilyNode';
 import AddMember from "../components/modal/AddMember";
-import FamilyTree from "../components/FamilyMembers";
 import {
   getFamilyMembersByGender,
   getChildrensOfParents,
@@ -820,7 +819,6 @@ const rootId = "HkqEDLvxE";
 const TreeView = () => {
   let rootData = getRootParents(relations,familyMembers);
   const [treeCount, setTreeCount] = useState(1);
-  const [familyRoot, setFamilyRoot] = useState(rootData[0]);
  
   const handleFormSubmit = (formValues) => {
     console.log("After submit  ",formValues);
@@ -880,18 +878,11 @@ const TreeView = () => {
     }
   }
 
-  const setRoot = (node) => {
-    console.log(node);
-    if(familyRoot != node){
-      setFamilyRoot(node);
-    }
-  }
-
   let traversed = [0];
   let onQueue = [...rootData];
   let counter = 0;
   const prepareTreeData = () => {
-    let allTreeData = {};
+    let allTreeData = [];
     while(onQueue.length > 0){
       let eachMember = onQueue.shift();
       if(traversed.includes(eachMember)) continue;
@@ -957,8 +948,7 @@ const TreeView = () => {
         onQueue.push(...itsSiblings);
       }
 
-      // allTreeData.push({...memberData});
-      allTreeData = {...allTreeData,[eachMember] : memberData};
+      allTreeData.push({...memberData});
 
       // console.log(memberData.id);
       // return;
@@ -970,24 +960,29 @@ const TreeView = () => {
 
   let familyTreeData = prepareTreeData();
   console.log(familyTreeData);
-  traversed = [];
 
   return (
     <Row className="mx-2">
       <Col>
-      <Space size="small" className="px-4 mt-4">
-          <AddMember handleFormSubmit={handleFormSubmit} getMembers={getMembers} getPartnersOfMember={getPartnersOfMember} />
-        </Space>
-      { (Object.entries(familyTreeData).length > 0) ? 
-        <FamilyTree 
-        nodes={familyTreeData}
-        rootId={familyRoot}
-        traversed={traversed}
-        getTop={true}
-        deleteNode={deleteNode}
-        setRoot={setRoot}
-        />
-         : ''}
+      <ReactFamilyTree
+        nodes={treeData}
+        rootId={rootId}
+        // nodes={familyTreeData}
+        // rootId={familyTreeData[0].id}
+        width={WIDTH}
+        height={HEIGHT}
+        renderNode={(node) => (
+            <FamilyNode
+                key={node.id}
+                node={node}
+                style={{
+                    width: WIDTH,
+                    height: HEIGHT,
+                    transform: `translate(${node.left * (WIDTH / 2)}px, ${node.top * (HEIGHT / 2)}px)`,
+                }}
+            />
+        )}
+    />
       </Col>
     </Row>
   );
